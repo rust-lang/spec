@@ -15,6 +15,10 @@ simple-expr /= <array-expr>
 
 4. An array-expr is ill-formed if `n` is not representible as a value of type `usize`, or if the size of the resulting array type is greater than `isize::MAX as usize`.
 
+[Note 1: The latter constraint means that the effectively largest `n` is `isize::MAX`, unless `T` is a zero-sized type. Types larger than 1 byte further constraint `n`]
+
+5. If all of `E0, E1, .., En` are *constant expressions*, then `[E0, E1, .., En]` is a *constant expression*.
+
 
 Syntax:
 ```abnf
@@ -32,3 +36,8 @@ simple-expr /= <repeat-expr>
 4. Given the repeat-expr `[val;N]`, `val` is a value expression, and the resulting repeat-expr is a value expression.
 
 5. A repeat-expr is ill-formed if the size of the resulting array type is greater than `isize::MAX as usize`.
+
+[Note 1: The latter constraint means that the effectively largest `N` is `isize::MAX`, unless `T` is a zero-sized type. Types larger than 1 byte further constraint `n`]
+
+6. If `val` is a *constant expression*, then `[val; N]` is a *constant expression*.
+
