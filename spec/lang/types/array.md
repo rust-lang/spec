@@ -20,4 +20,4 @@ type /= <array-type> / <slice-type>
 
 6. The metadata of the slice type `[T]` is `usize`, regardless of `T`. The metadata value stores the number of elements of the slice. The size of a value of type `[T]`, given the metadata value is `N`, is `N` times the size of `T`. 
 
-7. An array type `[T;N]` unsizes to the sl
+7. An array type `[T;N]` unsizes to the slice type `[T]`. The metadata for the coercion is the value `N`. 
