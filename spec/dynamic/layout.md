@@ -21,7 +21,7 @@
 |`Option<&T>`|Same as `*const T` | Same as `*const T`| aligned to `T`[^4][^5]|
 |`Option<&mut T>`|Same as `*mut T` | Same as `*mut T`| aligned to `T`[^4][^5]|
 |`fn()`[^3]| any[^1] | `<=ssize`[^1] | Non-null[^4] |
-| `Option<fn()>`[^3]| any[^1] | When initialized |
+| `Option<fn()>`[^3]| any[^1] | `<=size`[^1] | When initialized |
 | `[T;N]` | `size_of::<T>()*N` | Same as `T` | Each element valid |
 | `(T0,T1,..Tn)`[^6] | At least total of `T0`, `T1`, .. `Tn` + padding | At least maximum of `T0`, `T1`, ..`Tn` | Each element valid |
 | `()` | `0` | `1`  | Always |
