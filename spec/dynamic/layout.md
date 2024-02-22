@@ -69,7 +69,7 @@ r[dynamic.layout.properties.padding] The representation of a type may include pa
 
 r[dynamic.layout.properties.validity] Each `Sized` type has a validity invariant, which constrains the values that can be read from storage. Only value bytes are taken into account in determining the validity of a value.
 
-r[dynamic.layout.properties.underlying] Each `Sized` type may have an underlying type, which is also `Sized`. Such a type has the same size, alignmentment, and representation as the underlying type. Such a type may have an additional validity invariant, and also has the validity invariant of the underlying type.
+r[dynamic.layout.properties.underlying] Each `Sized` type may have an underlying type, which is also `Sized`. Such a type has the same size, alignmentment, representation, and pointer metadata type as the underlying type. Such a type may have an additional validity invariant, and also has the validity invariant of the underlying type.
 
 [!NOTE]: A repr(transparent) type has its transparent field as an underlying type
 
@@ -143,6 +143,20 @@ struct WidePtr{
 
 r[dynamic.layout.pointer.wide-validity] A given value of a pointer type is valid if the data portion is valid and the metadata portion is valid.
 
+r[dynamic.layout.pointer.ref] The reference type `&T` has an underlying type of `*const T`. The reference type `&mut T` has an underlying type of `*mut T`.
+
+r[dynamic.layout.pointer.ref-validity] A value of a reference type is valid if the pointer value has an address which is not the value `0` and is a multiple of the dynamic alignment requirement of the value.
+
+[!NOTE]: The dynamic alignment requirement is the alignment requirement of the type if the type has one, or otherwise if the pointer metadata type is a trait object vtable pointer, the alignment requirement accessible from the pointer metadata. A pointer with the address `0` is known as a null pointer.
+
+r[dynamic.layout.pointer.fn-size-align] A function pointer type has an target dependant size and alignment requirement. The size and alignment does not depend on the parameters, return type, or ABI tag of the function pointer type.
+
+[!NOTE]: This is typically, but not always, the same as the size and alignment requirement of `*const ()`.
+
+r[dynamic.layout.pointer.fn-repr] The address of a function pointer value is the same as the value of type `usize` computed from the same bytes. The pointer tag of a pointer value is each pointer portion of each byte of the representation. 
+
+r[dynamic.layout.pointer.fn-validity] A value of an function pointer type is valid if the address of the pointer is not `0`.
+
 ## Aggregate Layout r[dynamic.layout.aggregate]
 
 r[dynamic.layout.aggregate.fields] Each aggregate type has a list of fields, that each have a type and offset. 
@@ -196,9 +210,9 @@ r[dynamic.layout.aggregate.array] The array type `[T;N]` has `N` consecutive fie
 
 r[dynamic.layout.aggregate.array-size-align] The size of an array type is the size of `T` times `N`. The alignment requirement of an array type is the alignment requirement of `T`.
 
-r[dynamic.layout.aggregate.tuple] The built in tuple type with `n` elements `(T0, T1, ..Tn)` has an underlying type of `struct Tuple(T0, T1, ..Tn)`.
+r[dynamic.layout.aggregate.tuple] The built in tuple type with `n` elements `(T0, T1, ..Tn)` has an underlying type of the *exposition-only definition `struct Tuple(T0, T1, ..Tn)`.
 
-[!NOTE]: This means that the unit type `()` has size `1` and alignment requirement `0`.
+[!NOTE]: This means that the unit type `()` has size `1` and alignment requirement `0`. Built-in tuples have no requirements for field offsets other than those of r#[dynamic.layout.aggregate.struct-base].
 
 r[dynamic.layout.aggregate.repr] The representation of an aggregate type is the representation of each of its fields placed at the offset of the field. A byte of the representation is a padding byte if it is not a value byte in the representation of any field that overlaps that byte of the representation.
 
@@ -210,8 +224,46 @@ r[dynamic.layout.aggregate.union-validity] A value of a `union` type is valid.
 
 [!NOTE]: This is true even if any or all of its fields are invalid.
 
+r[dynamic.layout.aggregate.slice-align] The alignment requirement of a slice type `[T]` is the alignment requirement of  `T`.
+
 r[dynamic.layout.aggregate.slice-metadata] The pointer metadata type of a slice type is `usize`. 
 
 r[dynamic.layout.aggregate.struct-metadata] The pointer metadata type of a `struct` type is the pointer metadata type of the last field of the struct in declaration order.
 
 [!NOTE]: If the struct has no fields, then it is `Sized` and thus has a pointer metadata type of `()`.
+
+r[dynamic.layout.aggregate.str] The `str` type has an underlying type of `[u8]`.
+
+## Trait Object Type r[dynamic.layout.dyn]
+
+r[dynamic.layout.dyn.metadata] A trait object type `dyn Trait+Markers` has an unspecified pointer metadata type that has an underlying type of `*const VTable<Trait>` where the type `VTable<Trait>` is an unspecified `Thin` type. 
+
+[!NOTE]: The pointer metadata type is called the vptr type.
+
+r[dynamic.layout.dyn.metadata-repr] The representation of the vptr type is an unspecified address and unspecified pointer tag.
+
+r[dynamic.layout.dyn.metadata-validity] The validity invariant of the vptr type is unspecified, such that the result of unsizing a type as the trait object `dyn Trait+Markers` is valid.
+
+r[dynamic.layout.dyn.metadata-size-align] The size and alignment requirement acessible from a value of the vptr type obtained as the result of unsizing a type as the trait object `dyn Trait+Markers` is valid are the size and alignment of that type.
+
+## Enum definitions r[dynamic.layout.enum]
+
+r[dynamic.layout.enum.variants] Each enum type has a list of variants, each of which has a list of fields.
+
+r[dynamic.layout.enum.option] The special type `Option<T>` is an enum type, such that if `T` is one of the following types or a type with an underlying type that is one of the following (recursively), it has the corresponding underlying type.
+* `&T`: `*const T`
+* `&mut T`: `*mut T`
+* fn-ptr type: An unspecified, exposition-only, type with the same size and alignment as `fn()` that is valid for any initialized value
+* `core::num::NonZeroUN`: `uN`
+* `core::num::NonZeroIN`: `iN`
+* `core::ptr::NonNull<T>`: `*mut T`
+* `Box<T>`: `*mut T`
+
+r[dynamic.layout.enum.option-repr] The representation of the value `None` of type `Option<T>` where `T` is any type refered to in r#[dynamic.layout.enum.option] is the initialized value with each value byte set to `0` with no pointer part, except that the metadata field of `Option<&T>`, `Option<&mut T>`, `Option<NonNull<T>>`, or `Option<Box<T>>` (where `T` is `!Thin`) is unspecified. The representation of the value `Some(x)` of type `Option<T>` where `T` is any type refered to in r#[dynamic.layout.enum.option] is the representation of `x`.
+
+r[dynamic.layout.enum.option-ref-validity] A value of type `Option<&T>` or `Option<&mut T>` is valid if it corresponds to a pointer with address `0`, or a pointer with an address that satisfies the dynamic alignment requirement of `T`.
+
+r[dynamic.layout.enum.result] The special type `Result<T,E>` where `E` has size 0 and alignment 1, and `T` is a type mentioned in r#[dynamic.layout.enum.option], then `Result<T,E>` has an underlying type of `Option<T>`. The special type `Result<T,E>` where `T` has size 0 and alignment 1, and `E` is a type mentioned in r#[dynamic.layout.enum.option], then `Result<T,E>` has an underlying type of `Option<T>`
+
+r[dynamic.layout.enum.result-repr] Where `Result<T,E>` is a type referred to by r#[dynamic.layout.enum.result] The representation of the value `Err(e)` of type `Result<T,E>` is the same as the representation for `Some(e)` of type `Option<E>` if `T` has size 0 and alignment 1, and `None` of type `Option<T>` otherwise, and the representation of `Ok(t)` of type `Result<T,E>` is the same as the representation for `Some(t)` of type `Option<T>` if `E` has size 0 and alignment 1, and `None` of the type `Option<E>` otherwise.
+
