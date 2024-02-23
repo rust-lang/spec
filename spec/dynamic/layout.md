@@ -105,7 +105,7 @@ r[dynamic.layout.scalar.char-validity] A given value of type `char` is valid if 
 
 r[dynamic.layout.scalar.bool] The type `bool` has an underlying type of `u8`.
 
-r[dynamic.layout.scalar.bool-repr] The value `true` is represented the same as the value `0_u8`, and the value `false` is represented the same as the value `1_u8`
+r[dynamic.layout.scalar.bool-repr] The value `false` is represented the same as the value `0_u8`, and the value `true` is represented the same as the value `1_u8`
 
 r[dynamic.layout.scalar.bool-validity] A given value of type `bool` is valid if the corresponding value of type `u8` is valid, and the value lies in the range `0..2`.
 
