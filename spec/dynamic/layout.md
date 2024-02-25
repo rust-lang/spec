@@ -2,7 +2,9 @@
 
 ## Layout Overview [§](r[dynamic.layout.overview])
 
-[!Note] All sizes and alignments in this section are in bytes.
+[!NOTE]: This section is not normative
+
+[!Note]: All sizes and alignments in this section are in bytes.
 
 | Type | Size | Alignment |  Valid           |
 |------|------|-----------|------------------|
@@ -111,7 +113,7 @@
 
 [§](r[dynamic.layout.scalar.float]) A floating point type with width `N` has an underlying type of `uN`.
 
-[§](r[dynamic.layout.scalar.float-repr] A value of a floating-point has the representation corresponding to the value of the unsigned integer type computed from the value given by the appropriate interchange format from [IEEE 754])(https://ieeexplore.ieee.org/document/5976968).
+[§](r[dynamic.layout.scalar.float-repr]) A value of a floating-point has the representation corresponding to the value of the unsigned integer type computed from the value given by the appropriate interchange format from [IEEE 754](https://ieeexplore.ieee.org/document/5976968).
 
 [!NOTE]: The corresponding value may be called the bit representation of the floating-point value. 
 
