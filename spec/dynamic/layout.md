@@ -248,7 +248,63 @@ r[dynamic.layout.dyn.metadata-size-align] The size and alignment requirement ace
 
 ## Enum definitions r[dynamic.layout.enum]
 
+
 r[dynamic.layout.enum.variants] Each enum type has a list of variants, each of which has a list of fields.
+
+r[dynamic.layout.enum.field-offset] Each field of a variant has an offset, such that, given suitable storage for the enum, each field of each variant has suitable storage starting at the offset of that field, and the storage for each field does not overlap with the storage for any other field of the same variant.
+
+r[dynamic.layout.enum.repr] The representation of an enum is the representation of the corresponding variant. The representation of an enum variant is such that, if all fields of the variant are valid, each field of the variant is represented at the offset of that field, and the representation is distinguishable from the representation of any other variant with all fields of that variant valid.
+
+[!NOTE]: A variant is distinguishable from another variant if, given all of its fields are valid, the representation of that variant also does not represent the other variant, such that all of its fields are valid.
+
+r[dynamic.layout.enum.value] A byte of the representation of an enum is a value byte if it is used as a value by in the representation of a field of any variant. An unspecified set of all other bytes of the representation are padding bytes.
+
+r[dynamic.layout.enum.validity] A value of an enum type is valid if it is one of the variants of the enum, and each of the fields of that variant are valid. 
+
+r[dynamic.layout.enum.repr-attr] A `#[repr]` attribute may be applied to an `enum` definition. The attribute takes a list of repr attributes, all of which are apply a constraint to the layout of the type. The `#[repr]` attribute, if present on a `enum` definition, may contain at most one of the following repr attributes, and may optionally have the repr attribute `align(N)`:
+* `Rust`
+* `C`
+* `C,Int` where `Int` is the name of an integer type
+* `Int` where `Int` is the name of an integer type.
+ 
+r[dynamic.layout.enum.repr-int] An `enum` definition with the `Int` repr attribute, where `Int` is the name of an integer type, and with `n` variants `V0`, `V1`, `..Vn`, where variant `i<n` has `m` fields with types `ViF0`, `ViF1`, `..ViFm`, has an underlying type of the following *exposition only* `union` declaration, which is modified by the `align(N)` repr attribute if the `enum` definition is
+```rust
+#[repr(C)]
+pub union Repr{
+    pub V0: V0Repr,
+    pub V1: V1Repr,
+    ..pub Vn: VnRepr,
+}
+
+#[repr(C)]
+pub struct V0Repr(Int, V0F0, V0F1, ..V0Fm);
+#[repr(C)]
+pub struct V1Repr(Int, V1F0, V1F1, ..V1Fm);
+..#[repr(C)]
+pub struct VnRepr(Int, VnF0, VnF1, ..VnFm);
+```
+
+
+r[dynamic.layout.enum.repr-c-int] An `enum` definition with the `C,Int` repr-attribute, where `Int` is the name of an integer type, and with `n` variants `V0`, `V1`, `..Vn`, where variant `i<n` has `m` fields with types `ViF0`, `ViF1`, `..ViFm`, has an underlying type of the following *exposition only* `struct` declaration, which is modified by the `align(N)` repr attribute if the `enum` definition is
+```rust
+#[repr(C)]
+pub struct Repr(Int, VariantsRepr);
+#[repr(C)]
+pub union VariantsRepr{
+    pub V0: V0Repr,
+    pub V1: V1Repr,
+    ..pub Vn: VnRepr,
+}
+
+#[repr(C)]
+pub struct V0Repr(Int, V0F0, V0F1, ..V0Fm);
+#[repr(C)]
+pub struct V1Repr(Int, V1F0, V1F1, ..V1Fm);
+..#[repr(C)]
+pub struct VnRepr(Int, VnF0, VnF1, ..VnFm);
+```
+
+r[dynamic.layout.enum.repr-c-int] An `enum` definition with the `C` repr-attribute is the same as the same definition with the `C,Int` repr-attribute, where `Int` is a *target dependenant* signed integer type.
 
 r[dynamic.layout.enum.option] The special type `Option<T>` is an enum type, such that if `T` is one of the following types or a type with an underlying type that is one of the following (recursively), it has the corresponding underlying type.
 * `&T`: `*const T`
