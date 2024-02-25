@@ -179,7 +179,7 @@ struct WidePtr{
 
 [!NOTE]: This constraint applies regardless of any `repr` attributes present, other than `repr(align)`.
 
-[§](r[dynamic.layout.aggregate.repr] A `#[repr]` attribute may be applied to a `struct` or `union` definition. The attribute takes a list of repr attributes, all of which are apply a constraint to the layout of the type. The `#[repr])` attribute, if present on a `struct` or `union` definition, may contain any of the following repr attributes:
+[§](r[dynamic.layout.aggregate.repr]) A `#[repr]` attribute may be applied to a `struct` or `union` definition. The attribute takes a list of repr attributes, all of which are apply a constraint to the layout of the type. The `#[repr]` attribute, if present on a `struct` or `union` definition, may contain any of the following repr attributes:
 * `Rust`
 * `C`
 * `transparent`
@@ -206,7 +206,7 @@ struct WidePtr{
 
 [!NOTE]: The repr-attribute `repr(packed(1))` may be written as `repr(packed)`
 
-[§](r[dynamic.layout.aggregate.array] The array type `[T;N])` has `N` consecutive fields of type `T`. The offsets of each field are the minimum offset in order such that each field is nonoverlapping.
+[§](r[dynamic.layout.aggregate.array]) The array type `[T;N]` has `N` consecutive fields of type `T`. The offsets of each field are the minimum offset in order such that each field is nonoverlapping.
 
 [!NOTE]: The "fields" of an array type are known as its elements.
 
@@ -226,7 +226,7 @@ struct WidePtr{
 
 [!NOTE]: This is true even if any or all of its fields are invalid.
 
-[§](r[dynamic.layout.aggregate.slice-align] The alignment requirement of a slice type `[T])` is the alignment requirement of  `T`.
+[§](r[dynamic.layout.aggregate.slice-align]) The alignment requirement of a slice type `[T]` is the alignment requirement of  `T`.
 
 [§](r[dynamic.layout.aggregate.slice-metadata]) The pointer metadata type of a slice type is `usize`. 
 
@@ -234,7 +234,7 @@ struct WidePtr{
 
 [!NOTE]: If the struct has no fields, then it is `Sized` and thus has a pointer metadata type of `()`.
 
-[§](r[dynamic.layout.aggregate.str] The `str` type has an underlying type of `[u8])`.
+[§](r[dynamic.layout.aggregate.str]) The `str` type has an underlying type of `[u8]`.
 
 ## Trait Object Type [§](r[dynamic.layout.dyn])
 
@@ -263,7 +263,7 @@ struct WidePtr{
 
 [§](r[dynamic.layout.enum.validity]) A value of an enum type is valid if it is one of the variants of the enum, and each of the fields of that variant are valid. 
 
-[§](r[dynamic.layout.enum.repr-attr] A `#[repr]` attribute may be applied to an `enum` definition. The attribute takes a list of repr attributes, all of which are apply a constraint to the layout of the type. The `#[repr])` attribute, if present on a `enum` definition, may contain at most one of the following repr attributes, and may optionally have the repr attribute `align(N)`:
+[§](r[dynamic.layout.enum.repr-attr]) A `#[repr]` attribute may be applied to an `enum` definition. The attribute takes a list of repr attributes, all of which are apply a constraint to the layout of the type. The `#[repr]` attribute, if present on a `enum` definition, may contain at most one of the following repr attributes, and may optionally have the repr attribute `align(N)`:
 * `Rust`
 * `C`
 * `C,Int` where `Int` is the name of an integer type
@@ -321,7 +321,7 @@ pub struct VnRepr(Int, VnF0, VnF1, ..VnFm);
 
 [§](r[dynamic.layout.enum.option-ref-validity]) A value of type `Option<&T>` or `Option<&mut T>` is valid if it corresponds to a pointer with address `0`, or a pointer with an address that satisfies the dynamic alignment requirement of `T`.
 
-[§](r[dynamic.layout.enum.result] The special type `Result<T,E>` where `E` has size 0 and alignment 1, and `T` is a type mentioned in r#[dynamic.layout.enum.option], then `Result<T,E>` has an underlying type of `Option<T>`. The special type `Result<T,E>` where `T` has size 0 and alignment 1, and `E` is a type mentioned in r#[dynamic.layout.enum.option]), then `Result<T,E>` has an underlying type of `Option<T>`
+[§](r[dynamic.layout.enum.result]) The special type `Result<T,E>` where `E` has size 0 and alignment 1, and `T` is a type mentioned in r#[dynamic.layout.enum.option], then `Result<T,E>` has an underlying type of `Option<T>`. The special type `Result<T,E>` where `T` has size 0 and alignment 1, and `E` is a type mentioned in r#[dynamic.layout.enum.option], then `Result<T,E>` has an underlying type of `Option<T>`
 
-[§](r[dynamic.layout.enum.result-repr] Where `Result<T,E>` is a type referred to by r#[dynamic.layout.enum.result]) The representation of the value `Err(e)` of type `Result<T,E>` is the same as the representation for `Some(e)` of type `Option<E>` if `T` has size 0 and alignment 1, and `None` of type `Option<T>` otherwise, and the representation of `Ok(t)` of type `Result<T,E>` is the same as the representation for `Some(t)` of type `Option<T>` if `E` has size 0 and alignment 1, and `None` of the type `Option<E>` otherwise.
+[§](r[dynamic.layout.enum.result-repr]) Where `Result<T,E>` is a type referred to by r#[dynamic.layout.enum.result] The representation of the value `Err(e)` of type `Result<T,E>` is the same as the representation for `Some(e)` of type `Option<E>` if `T` has size 0 and alignment 1, and `None` of type `Option<T>` otherwise, and the representation of `Ok(t)` of type `Result<T,E>` is the same as the representation for `Some(t)` of type `Option<T>` if `E` has size 0 and alignment 1, and `None` of the type `Option<E>` otherwise.
 
