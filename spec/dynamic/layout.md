@@ -222,10 +222,6 @@ struct WidePtr{
 
 [§](r[dynamic.layout.aggregate.validity]) An aggregate type, other than a union, is valid if each field is valid.
 
-[§](r[dynamic.layout.aggregate.union-validity]) A value of a `union` type is valid.
-
-[!NOTE]: This is true even if any or all of its fields are invalid.
-
 [§](r[dynamic.layout.aggregate.slice-align]) The alignment requirement of a slice type `[T]` is the alignment requirement of  `T`.
 
 [§](r[dynamic.layout.aggregate.slice-metadata]) The pointer metadata type of a slice type is `usize`. 
@@ -315,9 +311,9 @@ pub struct VnRepr(Int, VnF0, VnF1, ..VnFm);
 * `core::num::NonZeroUN`: `uN`
 * `core::num::NonZeroIN`: `iN`
 * `core::ptr::NonNull<T>`: `*mut T`
-* `Box<T>`: `*mut T`
+* `alloc::boxed::Box<T>`: `*mut T`
 
-[§](r[dynamic.layout.enum.option-repr] The representation of the value `None` of type `Option<T>` where `T` is any type refered to in r#[dynamic.layout.enum.option] is the initialized value with each value byte set to `0` with no pointer part, except that the metadata field of `Option<&T>`, `Option<&mut T>`, `Option<NonNull<T>>`, or `Option<Box<T>>` (where `T` is `!Thin`) is unspecified. The representation of the value `Some(x)` of type `Option<T>` where `T` is any type refered to in r#[dynamic.layout.enum.option]) is the representation of `x`.
+[§](r[dynamic.layout.enum.option-repr]) The representation of the value `None` of type `Option<T>` where `T` is any type refered to in r#[dynamic.layout.enum.option] is the initialized value with each value byte set to `0` with no pointer part, except that the metadata field of `Option<&T>`, `Option<&mut T>`, `Option<NonNull<T>>`, or `Option<Box<T>>` (where `T` is `!Thin`) is unspecified. The representation of the value `Some(x)` of type `Option<T>` where `T` is any type refered to in r#[dynamic.layout.enum.option] is the representation of `x`.
 
 [§](r[dynamic.layout.enum.option-ref-validity]) A value of type `Option<&T>` or `Option<&mut T>` is valid if it corresponds to a pointer with address `0`, or a pointer with an address that satisfies the dynamic alignment requirement of `T`.
 
