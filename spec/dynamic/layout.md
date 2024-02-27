@@ -232,6 +232,8 @@ struct WidePtr{
 
 [§](r[dynamic.layout.aggregate.str]) The `str` type has an underlying type of `[u8]`.
 
+[§](r[dynamic.layout.aggregate.never]) The `!` type has an underlying type of `()`. A value of type `!` is not valid.
+
 ## Trait Object Type [§](r[dynamic.layout.dyn])
 
 [§](r[dynamic.layout.dyn.metadata]) A trait object type `dyn Trait+Markers` has an unspecified pointer metadata type that has an underlying type of `*const VTable<Trait>` where the type `VTable<Trait>` is an unspecified `Thin` type. 
