@@ -295,14 +295,22 @@ pub union VariantsRepr{
 }
 
 #[repr(C)]
-pub struct V0Repr(Int, V0F0, V0F1, ..V0Fm);
+pub struct V0Repr(V0F0, V0F1, ..V0Fm);
 #[repr(C)]
-pub struct V1Repr(Int, V1F0, V1F1, ..V1Fm);
+pub struct V1Repr(V1F0, V1F1, ..V1Fm);
 ..#[repr(C)]
-pub struct VnRepr(Int, VnF0, VnF1, ..VnFm);
+pub struct VnRepr(VnF0, VnF1, ..VnFm);
 ```
 
-[§](r[dynamic.layout.enum.repr-c-int]) An `enum` definition with the `C` repr-attribute is the same as the same definition with the `C,Int` repr-attribute, where `Int` is a *target dependenant* signed integer type.
+[§](r[dynamic.layout.enum.repr-c]) An `enum` definition with the `C` repr-attribute is the same as the same definition with the `C,Int` repr-attribute, where `Int` is a *target dependenant* signed integer type.
+
+[§](r[dynamic.layout.enum.discrim]) For an enum declaration with the `C,Int` repr-attribute, or the `C` repr attribute, the first field of the exposition only `Repr` struct is initialized to the discriminant of the variant which is being represented, and the fields of the corresponding variant repr type are initialized to the fields of that variant. For an enum declaration with the `Int` repr-attribute, the first field of the variant repr type is the discriminant of the variant, and the remaining fields are initialized to the fields of that variant.
+
+[§](r[dynamic.layout.enum.size-align]) The size of an `enum` definition is at least sufficient to store its representation. The alignment of an `enum` definition is at least sufficient to satisfy the alignment requirement of all fields of all variants in its representation.
+
+[!NOTE]: In the case of an `enum` with a repr-attribute other than `repr(Rust)` or `repr(align(N))`, the size and alignment are given by the appropriate *exposition only* `Repr` type.
+
+[§](r[dynamic.layout.enum.repr-align]) If the `align(N)` repr-attribute is present on an `enum` definition, then the alignment requirement of the enum is at least `N`.
 
 [§](r[dynamic.layout.enum.option]) The special type `Option<T>` is an enum type, such that if `T` is one of the following types or a type with an underlying type that is one of the following (recursively), it has the corresponding underlying type.
 * `&T`: `*const T`
