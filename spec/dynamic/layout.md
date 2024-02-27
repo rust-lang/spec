@@ -2,9 +2,9 @@
 
 ## Layout Overview [§](r[dynamic.layout.overview])
 
-[!NOTE]: This section is not normative
+[!NOTE]: This section provides an overview of some example types in rust.
 
-[!Note]: All sizes and alignments in this section are in bytes.
+[!NOTE]: All sizes and alignments in this section are in bytes.
 
 | Type | Size | Alignment |  Valid           |
 |------|------|-----------|------------------|
