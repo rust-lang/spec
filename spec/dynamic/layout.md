@@ -53,7 +53,7 @@
 
 [!NOTE]: For example, the size of `u8` is `1`, and the size of `u32` is `4`.
 
-[§](r[dynamic.layout.properties.align]) Each `Sized` type and the slice type has a property call its alignment requirement.  The alignment requirement is a positive integer power of 2.
+[§](r[dynamic.layout.properties.align]) Each `Sized` type and the slice type has a property called its alignment requirement.  The alignment requirement is a positive integer power of 2. An address satisfies an alignment requirement if it is a multiple of that alignment requirement. 
 
 [!NOTE]: The alignment requirement may simply be called the alignment or align of the type.
 
@@ -83,7 +83,7 @@
 
 [§](r[dynamic.layout.scalar.int-size]) Each integer type of width `N` has a size exactly equal to `N/8`. 
 
-[1NOTE]: The width of the integer type `uN` or `iN` is `N`. 
+[!NOTE]: The width of the integer type `uN` or `iN` is `N`. 
 
 [§](r[dynamic.layout.scalar.int-align]) Each integer type has a target-dependendant alignment requirement which is at most its size. 
 
@@ -167,7 +167,7 @@ struct WidePtr{
 
 [§](r[dynamic.layout.aggregate.struct-base] The fields of a `struct` definition are each layed at offsets that ensure that each field occupies nonoverlapping storage, which, unless modified by the `repr(packed)` attribute (r#[dynamic.layout.aggregate.packed])) is suitably aligned. The size of a `struct` definition is at least sufficient to store each field, and the alignment requirement of a `struct` definition, unless modified by the `repr(packed)` attribute, is suitable to align each field.
 
-[!NOTE]: The offsets of the fields, sizes, and alignment requirements of two different `struct` types, even with the same field types in the same order, may be different.
+[!NOTE]: The offsets of the fields, sizes, and alignment requirements of two different `struct` types, even with the same field types in the same source order, may be different.
 
 [§](r[dynamic.layout.aggregate.union-base]) The fields of a `union` definition are each layed out at offsets that ensure they occupy storage, which, unless modified by the `repr(packed)` attribute is suitably aligned. The size of a `union` definition is at least sufficient to store its largest field, and the alignment requirement of a `union` definition, unless modified by the `repr(packed)` attribute, is suitable to align the field with the strictest alignment requirement.
 
@@ -244,7 +244,7 @@ struct WidePtr{
 
 [§](r[dynamic.layout.dyn.metadata-validity]) The validity invariant of the vptr type is unspecified, such that the result of unsizing a type as the trait object `dyn Trait+Markers` is valid.
 
-[§](r[dynamic.layout.dyn.metadata-size-align]) The size and alignment requirement acessible from a value of the vptr type obtained as the result of unsizing a type as the trait object `dyn Trait+Markers` is valid are the size and alignment of that type.
+[§](r[dynamic.layout.dyn.metadata-size-align]) The size and alignment requirement acessible from a value of the vptr type obtained as the result of unsizing a type as the trait object `dyn Trait+Markers` are the size and alignment of that type.
 
 ## Enum definitions [§](r[dynamic.layout.enum])
 
@@ -314,10 +314,10 @@ pub struct VnRepr(VnF0, VnF1, ..VnFm);
 
 [§](r[dynamic.layout.enum.repr-align]) If the `align(N)` repr-attribute is present on an `enum` definition, then the alignment requirement of the enum is at least `N`.
 
-[§](r[dynamic.layout.enum.option]) The special type `Option<T>` is an enum type, such that if `T` is one of the following types or a type with an underlying type that is one of the following (recursively), it has the corresponding underlying type.
+[§](r[dynamic.layout.enum.option]) The special type `core::option::Option<T>` is an enum type, such that if `T` is one of the following types or a type with an underlying type that is one of the following (recursively), it has the corresponding underlying type.
 * `&T`: `*const T`
 * `&mut T`: `*mut T`
-* fn-ptr type: An unspecified, exposition-only, type with the same size and alignment as `fn()` that is valid for any initialized value
+* fn-ptr type: An unspecified, exposition-only, type with the same size and alignment as `fn()` that is valid for any initialized value and can exactly represent any representable value of type `fn()`.
 * `core::num::NonZeroUN`: `uN`
 * `core::num::NonZeroIN`: `iN`
 * `core::ptr::NonNull<T>`: `*mut T`
@@ -325,9 +325,11 @@ pub struct VnRepr(VnF0, VnF1, ..VnFm);
 
 [§](r[dynamic.layout.enum.option-repr]) The representation of the value `None` of type `Option<T>` where `T` is any type refered to in r#[dynamic.layout.enum.option] is the initialized value with each value byte set to `0` with no pointer part, except that the metadata field of `Option<&T>`, `Option<&mut T>`, `Option<NonNull<T>>`, or `Option<Box<T>>` (where `T` is `!Thin`) is unspecified. The representation of the value `Some(x)` of type `Option<T>` where `T` is any type refered to in r#[dynamic.layout.enum.option] is the representation of `x`.
 
+[!NOTE]: This may be called null pointer optimization or discriminant elision. It is guaranteed for the types mentioned above. 
+
 [§](r[dynamic.layout.enum.option-ref-validity]) A value of type `Option<&T>` or `Option<&mut T>` is valid if it corresponds to a pointer with address `0`, or a pointer with an address that satisfies the dynamic alignment requirement of `T`.
 
-[§](r[dynamic.layout.enum.result]) The special type `Result<T,E>` where `E` has size 0 and alignment 1, and `T` is a type mentioned in r#[dynamic.layout.enum.option], then `Result<T,E>` has an underlying type of `Option<T>`. The special type `Result<T,E>` where `T` has size 0 and alignment 1, and `E` is a type mentioned in r#[dynamic.layout.enum.option], then `Result<T,E>` has an underlying type of `Option<T>`
+[§](r[dynamic.layout.enum.result]) The special type `core::result::Result<T,E>` where `E` has size 0 and alignment 1, and `T` is a type mentioned in r#[dynamic.layout.enum.option], then `Result<T,E>` has an underlying type of `Option<T>`. The special type `Result<T,E>` where `T` has size 0 and alignment 1, and `E` is a type mentioned in r#[dynamic.layout.enum.option], then `Result<T,E>` has an underlying type of `Option<E>`
 
-[§](r[dynamic.layout.enum.result-repr]) Where `Result<T,E>` is a type referred to by r#[dynamic.layout.enum.result] The representation of the value `Err(e)` of type `Result<T,E>` is the same as the representation for `Some(e)` of type `Option<E>` if `T` has size 0 and alignment 1, and `None` of type `Option<T>` otherwise, and the representation of `Ok(t)` of type `Result<T,E>` is the same as the representation for `Some(t)` of type `Option<T>` if `E` has size 0 and alignment 1, and `None` of the type `Option<E>` otherwise.
+[§](r[dynamic.layout.enum.result-repr]) Where `Result<T,E>` is a type referred to by r#[dynamic.layout.enum.result], if `E` is of size 0 and alignment 1, the representation of `Ok(t)` of type `Result<T,E>` is the same as the representation of `Some(t)` of type `Option<T>` and the represention of `Err(e)` is the same as the representation of `None` of type `Option<T>`. Otherwise, the representation of `Ok(t)` of type `Result<T,E>` is the same as the representation of `None` of type `Option<E>` and the representation of `Err(e)` of type `Result<T,E>` is the same as the representation of `Some(e)` of type `Option<E>`
 
