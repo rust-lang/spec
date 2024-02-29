@@ -1,0 +1,14 @@
+[book]
+language = "en"
+title = "The Rust Specification"
+src = "spec"
+
+[output.html]
+additional-css = ["css/custom.css"]
+curly-quotes = true
+
+[preprocessor.spec]
+command = "cargo run --locked --manifest-path=mdbook-spec/Cargo.toml"
+
+[build]
+extra-watch-dirs = ["mdbook-spec/src", "css"]
