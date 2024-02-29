@@ -71,7 +71,7 @@
 
 [§](r[dynamic.layout.properties.validity]) Each `Sized` type has a validity invariant, which constrains the values that can be read from storage. Only value bytes are taken into account in determining the validity of a value.
 
-[§](r[dynamic.layout.properties.underlying]) Each `Sized` type may have an underlying type, which is also `Sized`. Such a type has the same size, alignmentment, representation, and pointer metadata type as the underlying type. Such a type may have an additional validity invariant, and also has the validity invariant of the underlying type.
+[§](r[dynamic.layout.properties.underlying]) Each `Sized` type may have an underlying type, which is also `Sized`. Such a type has the same size, alignment, representation, and pointer metadata type as the underlying type. Such a type may have an additional validity invariant, and also has the validity invariant of the underlying type.
 
 [!NOTE]: A repr(transparent) type has its transparent field as an underlying type
 
@@ -87,7 +87,7 @@
 
 [§](r[dynamic.layout.scalar.int-align]) Each integer type has a target-dependendant alignment requirement which is at most its size. 
 
-[§](r[dynamic.layout.scalar.unsigned-repr]) Each unsigned integer type is represented as a sequence of bytes, in a target-dependenant order of increasing signifiance. The value, decomposed as groups of order 2^8, is layed out in the target-dependenant signifiance order.
+[§](r[dynamic.layout.scalar.unsigned-repr]) Each unsigned integer type is represented as a sequence of bytes, in a target-dependent order of increasing significance. The value, decomposed as groups of order 2^8, is laid out in the target-dependenant signifiance order.
 
 [!NOTE]: The order of the bytes of an integer larger than 1 byte is known as the endianness. All bytes representing an integer type are value bytes.
 
@@ -111,9 +111,9 @@
 
 [§](r[dynamic.layout.scalar.bool-validity]) A given value of type `bool` is valid if the corresponding value of type `u8` is valid, and the value lies in the range `0..2`.
 
-[§](r[dynamic.layout.scalar.float]) A floating point type with width `N` has an underlying type of `uN`.
+[§](r[dynamic.layout.scalar.float]) A floating-point type with width `N` has an underlying type of `uN`.
 
-[§](r[dynamic.layout.scalar.float-repr]) A value of a floating-point has the representation corresponding to the value of the unsigned integer type computed from the value given by the appropriate interchange format from [IEEE 754](https://ieeexplore.ieee.org/document/5976968).
+[§](r[dynamic.layout.scalar.float-repr]) A floating-point value has the representation corresponding to the value of the unsigned integer type computed from the value given by the appropriate interchange format from [IEEE 754](https://ieeexplore.ieee.org/document/5976968).
 
 [!NOTE]: The corresponding value may be called the bit representation of the floating-point value. 
 
