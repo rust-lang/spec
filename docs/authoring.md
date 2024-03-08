@@ -2,7 +2,21 @@
 
 ## Markdown formatting
 
-* Use ATX-style heading with sentence case.
+* Use [ATX-style headings][atx] (not Setext) with [sentence case].
+* Do not use tabs, only spaces.
+* Files must end with a newline.
+* Lines must not end with spaces. Double spaces have semantic meaning, but can be invisible. Use a trailing backslash if you need a hard line break.
+* If possible, avoid double blank lines.
+* Do not use indented code blocks, use 3+ backticks code blocks instead.
+* Code blocks should have an explicit language tag.
+* Do not wrap long lines. This helps with reviewing diffs of the source.
+* Use [smart punctuation] instead of Unicode characters. For example, use `---` for em-dash instead of the Unicode character. Characters like em-dash can be difficult to see in a fixed-width editor, and some editors may not have easy methods to enter such characters.
+
+There are automated checks for some of these rules. Run `cargo run --manifest-path style-check/Cargo.toml -- spec` to run them locally.
+
+[atx]: https://spec.commonmark.org/0.31.2/#atx-headings
+[sentence case]: https://apastyle.apa.org/style-grammar-guidelines/capitalization/sentence-case
+[smart punctuation]: https://rust-lang.github.io/mdBook/format/markdown.html#smart-punctuation
 
 ## Special markdown constructs
 
