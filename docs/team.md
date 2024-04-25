@@ -2,9 +2,15 @@
 
 ## Mission
 
+TODO
+
 ## Team membership
 
+TODO
+
 ### Membership expectations
+
+TODO
 
 #### Review policy
 
@@ -31,8 +37,12 @@ This policy does not yet cover the process for getting final approval from the r
 
 ### Becoming a member
 
+TODO
+
 ## Team resources
 
 ## Decision process
+
+TODO
 
 ## Contact
