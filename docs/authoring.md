@@ -65,3 +65,15 @@ Admonitions use a style similar to GitHub-flavored markdown, where the style nam
 ```
 
 All this does is apply a CSS class to the blockquote. You should define the color or style of the rule in the `css/custom.css` file if it isn't already defined.
+
+## Content guidelines
+
+The following are guidelines for the content of the spec.
+
+### Targets
+
+The spec does not document which targets exist, or the properties of specific targets. The spec may refer to *platforms* or *target properties* where required by the language. Some examples:
+
+* Conditional-compilation keys like `target_os` are specified to exist, but not what their values must be.
+* The `windows_subsystem` attribute specifies that it only works on Windows platforms.
+* Inline assembly and the `target_feature` attribute specify the architectures that are supported.
