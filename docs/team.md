@@ -2,9 +2,15 @@
 
 ## Mission
 
+TODO
+
 ## Team membership
 
+TODO
+
 ### Membership expectations
+
+TODO
 
 #### Review policy
 
@@ -29,10 +35,38 @@ This policy does not yet cover the process for getting final approval from the r
 
 ### Meetings
 
+The team meets on a weekly basis on a video chat.
+If you are interested in participating, feel free to contact us on the [`#t-spec`] stream on Zulip.
+
+Minutes for all meetings are recorded on [HackMD][meeting-minutes].
+
+[meeting-minutes]: https://hackmd.io/@rust-spec-team?tags=%5B%22meeting%22%5D
+
 ### Becoming a member
+
+TODO
 
 ## Team resources
 
+### Zulip
+
+The following Zulip streams are available for the Spec Team:
+
+- [`#t-spec`] — General public channel for discussing any topics related to the spec.
+- [`#t-spec/private`](https://rust-lang.zulipchat.com/#narrow/stream/419790-t-spec.2Fprivate) — Private channel for team-internal discussions.
+
+[`#t-spec`]: https://rust-lang.zulipchat.com/#narrow/stream/399173-t-spec
+
+### HackMD
+
+The Spec Team has a shared workspace at HackMD at <https://hackmd.io/@rust-spec-team> for drafting documents and recording meeting minutes.
+
 ## Decision process
 
+TODO
+
 ## Contact
+
+If you need to contact the team, it is recommended to use the [`#t-spec`] Zulip stream, or to file an issue on the [Spec issue tracker].
+
+[Spec issue tracker]: https://github.com/rust-lang/spec/issues
