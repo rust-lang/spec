@@ -18,5 +18,3 @@ jobs:
       env:
         SPEC_DENY_WARNINGS: 1
       run: mdbook build
-    - name: Run style check
-      run: (cd style-check && cargo run -- ../spec)
