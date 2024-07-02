@@ -1,0 +1,27 @@
+name: Publish mdbook-spec
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    name: Publish mdbook-spec
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./mdbook-spec
+    steps:
+      - uses: actions/checkout@master
+      - name: Test
+        run: cargo test
+      - name: Publish
+        env:
+          CRATES_IO_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
+        run: |
+          version=`sed -n -E 's/^version = "(.*)"/\1/p' Cargo.toml`
+          cargo publish --no-verify
+          tag="mdbook-spec-${version}"
+          git tag $tag
+          git push origin "$tag"
