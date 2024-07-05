@@ -9,6 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
+    - name: Verify mdbook-spec lockfile is current
+      working-directory: ./mdbook-spec
+      run: cargo update -p mdbook-spec --locked
+    - name: Test mdbook-spec
+      working-directory: ./mdbook-spec
+      run: cargo test
+    - name: Rustfmt check
+      working-directory: ./mdbook-spec
+      run: cargo fmt --check
     - name: Install mdbook
       run: |
         mkdir bin
