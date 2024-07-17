@@ -1,25 +1,12 @@
 # The Rust Specification
 
-## Building
+## The Spec and the Rust Reference
 
-The specification uses [mdBook] to process the source into HTML. See [mdBook Installation] for more information on installing mdBook. To build the book, run:
+** The Rust specification is currently being developed as part of the [Rust Reference](https://github.com/rust-lang/reference).
 
-```sh
-mdbook build
-```
+The [`t-spec`](https://www.rust-lang.org/governance/teams/lang#team-spec) team, in consultation with interested parties from the Rust Project, made the decision on a [go-forward plan](https://hackmd.io/d-8LXh2NTASg7NF-zmZqNA?both#Review-go-forward-plan) that makes the Rust Reference the source of truth and the specification will be based on that content. 
 
-This will output the HTML into a directory called `book`.
-
-For authors, consider using the server functionality which supports automatic reload:
-
-```sh
-mdbook serve --open
-```
-
-This will open a browser with a websocket live-link to automatically reload whenever the source is updated.
-
-[mdBook]: https://rust-lang.github.io/mdBook/
-[mdBook Insallation]: https://rust-lang.github.io/mdBook/guide/installation.html
+It is currently unclear what happens to both this repository and the Rust reference once we are at a steady-state of having a usable specification. It is likely we will consolidate the two repositories into one that ends up being called the specification. Stay tuned for more information on that.
 
 ## License
 
