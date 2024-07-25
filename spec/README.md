@@ -1,1 +1,0 @@
-See the project [README](../README.md) for information on the process for creating the Rust specification.
